@@ -26,6 +26,10 @@
           display: block;
         }
       }
+
+      placetobe-input-box {
+        margin-bottom: 6px;
+      }
     </style>
   </head>
   <body>
@@ -34,10 +38,25 @@
       <demo-snippet>
         <template>
           <placetobe-input-box
-            name="first name"
             type="text"
+            name="first name"
             required
-            pattern=".{4,}"
+            pattern=".{2,}"
+            tip="min 2 charachters"
+          ></placetobe-input-box>
+          <placetobe-input-box
+            type="text"
+            name="last name"
+            required
+            pattern=".{3,}"
+            tip="min 3 charachters"
+          ></placetobe-input-box>
+          <placetobe-input-box
+            type="text"
+            name="postal code"
+            required
+            pattern="[0-9]{4}(\s|)[a-zA-Z]{2}"
+            tip="e.g. 1234 AB"
           ></placetobe-input-box>
         </template>
       </demo-snippet>
