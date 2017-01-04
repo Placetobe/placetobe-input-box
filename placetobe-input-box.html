@@ -1,0 +1,223 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../placetobe-behaviors/placetobe-styles-behavior.html">
+<link rel="import" href="../placetobe-styles/placetobe-styles.html">
+
+<!--
+`placetobe-input-box`
+Placetobe Input Box
+
+@demo demo/index.html 
+-->
+
+<dom-module id="placetobe-input-box">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      :host div {
+        @apply --placetobe-border-box;
+        position: relative;
+      }
+
+      :host([focussed]) div {
+      }
+
+      :host h6 {
+        @apply --placetobe-font-body;
+        position: absolute;
+        top: 6px;
+        left: calc(var(--placetobe-margin) / 2);
+        font-size: 11px;
+        font-weight: 500;
+        opacity: 1;
+        transform: translateY(0);
+        transition: 0.3s transform, 0.3s opacity, 0.3s color;
+        text-transform: capitalize;
+        pointer-events: none;
+        color: var(--placetobe-color-taupe);
+      }
+
+      :host([focussed]) h6 {
+        color: var(--placetobe-color-green);
+      }
+
+      :host([display-error]) h6 {
+        color: var(--placetobe-color-red);
+      }
+
+      :host([empty]) h6 {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      :host input {
+        @apply --placetobe-border-box;
+        @apply --placetobe-border-radius;
+        @apply --placetobe-font-body;
+        border: 1px solid var(--placetobe-color-taupe);
+        height: calc( var(--placetobe-margin) * 3);
+        width: 100%;
+        padding: calc( var(--placetobe-margin) * 1.25 ) calc(var(--placetobe-margin) / 2) calc(var(--placetobe-margin) / 2);
+        transition: 0.2s border-color, 0.3s padding-top;
+        outline: none;
+        color: var(--placetobe-color-darkblue);
+      }
+
+
+      :host([empty]) input {
+        padding-top: calc( var(--placetobe-margin) / 2);
+      }
+
+      :host([focussed]) input {
+        border-color: var(--placetobe-color-green);
+        color: var(--placetobe-color-darkblue);
+      }
+
+      :host([display-error]) input {
+        border-color: var(--placetobe-color-red);
+      }
+
+      ::-webkit-input-placeholder {
+        color: var(--placetobe-color-taupe);
+        font-weight: 500;
+        text-transform: capitalize;
+      }
+      ::-moz-placeholder {
+        color: var(--placetobe-color-taupe);
+        font-weight: 500;
+        text-transform: capitalize;
+      }
+      :-ms-input-placeholder {
+        color: var(--placetobe-color-taupe);
+        font-weight: 500;
+        text-transform: capitalize;
+      }
+    </style>
+
+    <div>
+
+      <h6>[[name]]</h6>
+
+      <input
+        type$="[[type]]"
+        name="[[name]]"
+        placeholder="[[name]]"
+        min$="[[min]]"
+        max$="[[max]]"
+        step$="[[step]]"
+        pattern$="[[pattern]]"
+        value="{{value::input}}"
+        on-focus="_handleFocus"
+        on-blur="_handleBlur"
+        required$="[[required]]"
+        >
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'placetobe-input-box',
+
+      properties: {
+
+        type: {
+          type: String,
+          value: "text"
+        },
+
+        required: {
+          type: Boolean,
+          value: false
+        },
+
+        min: {
+          type: Number,
+          value: null
+        },
+
+        max: {
+          type: Number,
+          value: null
+        },
+
+        step: {
+          type: Number,
+          value: null
+        },
+
+        pattern: {
+          type: String
+        },
+
+        name: {
+          type: String,
+          value: null
+        },
+        
+        value: {
+          type: String,
+          value: null
+        },
+
+        valid: {
+          type: Boolean,
+          computed: '_computeValid(value, focussed, type, required, min, max, step, pattern)',
+          notify: true
+        },
+
+        displayError: {
+          type: Boolean,
+          computed: '_computeDisplayError(valid, _hasFocussed)',
+          notify: true,
+          reflectToAttribute: true          
+        },
+
+        empty: {
+          type: Boolean,
+          computed: '_computeEmpty(value)',
+          notify: true,
+          reflectToAttribute: true          
+        },
+
+        focussed: {
+          type: Boolean,
+          value: false,
+          readOnly: true,
+          reflectToAttribute: true
+        },
+
+        _hasFocussed: {
+          type: Boolean,
+          value: false
+        }
+
+      },
+
+      _computeEmpty: function(value) {
+        return (!value || value.length < 1);
+      },
+
+      _computeValid: function() {
+        return this.$$('input').checkValidity();
+      },
+
+      _computeDisplayError: function(valid, hasFocussed) {
+        return (!valid && hasFocussed);
+      },
+
+      _handleFocus: function() {
+        this._hasFocussed = true;
+        this._setFocussed(true);
+      },
+
+      _handleBlur: function() {
+        this._setFocussed(false);
+      }
+
+    });
+  </script>
+</dom-module>
