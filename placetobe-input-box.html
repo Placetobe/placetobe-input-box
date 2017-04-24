@@ -27,6 +27,10 @@ Placetobe Input Box
         background-color: white;
       }
 
+      :host div[disabled] {
+        background-color: var(--input-box-disabled-background-color);        
+      }
+      
       :host([focussed]) div {
         border-color: var(--placetobe-color-green);
       }
@@ -168,7 +172,7 @@ Placetobe Input Box
       }
     </style>
 
-    <div>
+    <div disabled$="[[disabled]]">
 
       <label for="input">[[name]]</label>
 
@@ -186,6 +190,7 @@ Placetobe Input Box
         on-focus="_handleFocus"
         on-blur="_handleBlur"
         required$="[[required]]"
+        disabled$="[[disabled]]"
         >
 
         <h6 hidden$="[[_tipHidden]]">[[tip]]</h6>
@@ -283,6 +288,11 @@ Placetobe Input Box
         tip: {
           type: String,
           value: null
+        },
+
+        disabled: {
+          type: Boolean,
+          value: false
         },
 
         _tipHidden: {

@@ -29,6 +29,7 @@
 
       placetobe-input-box {
         margin-bottom: 6px;
+       --input-box-disabled-background-color: green;        
       }
     </style>
   </head>
@@ -67,6 +68,12 @@
             required
             tip="min 100, max 1000, steps 5"
           ></placetobe-input-box>
+          <placetobe-input-box
+            type="text"
+            name="country"
+            value="Netherlands"
+            disabled
+          ></placetobe-input-box>          
         </template>
       </demo-snippet>
     </div>
